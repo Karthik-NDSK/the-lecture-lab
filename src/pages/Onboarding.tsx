@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -57,32 +57,32 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
       >
-        <Card className="w-full max-w-md shadow-2xl">
-          <CardHeader className="text-center space-y-4 pb-8">
+        <Card className="border shadow-sm">
+          <CardHeader className="text-center space-y-4 pb-6">
             <div className="flex justify-center">
-              <div className="text-6xl">📚</div>
+              <span className="text-4xl">📚</span>
             </div>
-            <CardTitle className="text-3xl font-bold tracking-tight">
-              The Lecture Lab
-            </CardTitle>
-            <CardDescription className="text-base">
-              Your AI-Powered Study Companion
-            </CardDescription>
-            <p className="text-sm text-muted-foreground">
-              Transform lecture notes into interactive quizzes
-            </p>
+            <div className="space-y-2">
+              <CardTitle className="text-2xl font-bold tracking-tight">
+                Welcome to The Lecture Lab
+              </CardTitle>
+              <CardDescription className="text-sm">
+                Let's get you set up in just a moment
+              </CardDescription>
+            </div>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="displayName" className="text-base">
+                <Label htmlFor="displayName" className="text-sm font-medium">
                   What should we call you?
                 </Label>
                 <Input
@@ -90,7 +90,7 @@ export default function Onboarding() {
                   placeholder="Enter your name"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="text-base"
+                  className="h-11"
                   autoFocus
                   required
                 />
@@ -98,7 +98,7 @@ export default function Onboarding() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white h-12 text-base cursor-pointer"
+                className="w-full h-11 cursor-pointer"
                 disabled={isSubmitting || !displayName.trim()}
               >
                 {isSubmitting ? (
@@ -107,7 +107,10 @@ export default function Onboarding() {
                     Setting up...
                   </>
                 ) : (
-                  "Get Started"
+                  <>
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
                 )}
               </Button>
             </form>
