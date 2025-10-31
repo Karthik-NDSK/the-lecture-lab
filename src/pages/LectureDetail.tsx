@@ -172,7 +172,7 @@ export default function LectureDetail() {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <AnimatePresence mode="wait">
           {quizMode === "overview" && (
             <motion.div
@@ -181,17 +181,17 @@ export default function LectureDetail() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <div className="mb-8">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">{lecture.title}</h1>
+              <div className="mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 sm:mb-4 leading-tight">{lecture.title}</h1>
                 {stats && (
-                  <div className="flex gap-4 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                     <span>📊 {stats.totalQuizzes} quizzes taken</span>
                     <span>⭐ {stats.averageScore}% average score</span>
                   </div>
                 )}
               </div>
 
-              <Card className="mb-8">
+              <Card className="mb-6 sm:mb-8">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="h-5 w-5" />
@@ -221,7 +221,7 @@ export default function LectureDetail() {
                 </CardContent>
               </Card>
 
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startQuiz("mcq")}>
                   <CardHeader>
                     <CardTitle className="text-lg">Multiple Choice</CardTitle>
@@ -271,19 +271,19 @@ export default function LectureDetail() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <div className="mb-6">
+              <div className="mb-4 sm:mb-6">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">
+                  <span className="text-xs sm:text-sm font-medium">
                     Question {currentQuestionIndex + 1} of {questions.length}
                   </span>
-                  <span className="text-sm text-muted-foreground">{Math.round(progress)}%</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="h-2" />
               </div>
 
-              <Card className="mb-6">
+              <Card className="mb-4 sm:mb-6">
                 <CardHeader>
-                  <CardTitle className="text-xl">{currentQuestion.question}</CardTitle>
+                  <CardTitle className="text-base sm:text-lg md:text-xl leading-snug">{currentQuestion.question}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {quizMode === "mcq" && currentQuestion.options && (
@@ -320,7 +320,7 @@ export default function LectureDetail() {
                 </CardContent>
               </Card>
 
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0">
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
@@ -329,16 +329,16 @@ export default function LectureDetail() {
                 >
                   Previous
                 </Button>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                   {currentQuestionIndex < questions.length - 1 ? (
-                    <Button onClick={handleNext} className="cursor-pointer">
+                    <Button onClick={handleNext} className="cursor-pointer flex-1 sm:flex-initial">
                       Next
                     </Button>
                   ) : (
                     <Button
                       onClick={handleSubmitQuiz}
                       disabled={isSubmitting || Object.keys(userAnswers).length < questions.length}
-                      className="cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      className="cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 flex-1 sm:flex-initial"
                     >
                       {isSubmitting ? (
                         <>
@@ -363,8 +363,8 @@ export default function LectureDetail() {
               exit={{ opacity: 0, y: -20 }}
             >
               {/* Score Summary Card */}
-              <Card className="mb-8 overflow-hidden">
-                <div className={`p-6 text-center ${
+              <Card className="mb-6 sm:mb-8 overflow-hidden">
+                <div className={`p-4 sm:p-6 text-center ${
                   (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 
                     ? 'bg-gradient-to-br from-green-50 to-emerald-50' 
                     : (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6
@@ -376,32 +376,32 @@ export default function LectureDetail() {
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="text-6xl mb-4"
+                    className="text-5xl sm:text-6xl mb-3 sm:mb-4"
                   >
                     {(quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 ? '🎉' : 
                      (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6 ? '👍' : '📚'}
                   </motion.div>
-                  <CardTitle className="text-3xl mb-2">
+                  <CardTitle className="text-2xl sm:text-3xl mb-2">
                     {(quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 ? 'Excellent Work!' : 
                      (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6 ? 'Good Job!' : 'Keep Practicing!'}
                   </CardTitle>
-                  <div className="flex items-center justify-center gap-4 mt-4">
+                  <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4">
                     <div className="text-center">
-                      <div className="text-4xl font-bold text-green-600">
+                      <div className="text-3xl sm:text-4xl font-bold text-green-600">
                         {quizResults.filter(r => r.isCorrect).length}
                       </div>
-                      <div className="text-sm text-muted-foreground">Correct</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">Correct</div>
                     </div>
-                    <div className="text-2xl text-muted-foreground">/</div>
+                    <div className="text-xl sm:text-2xl text-muted-foreground">/</div>
                     <div className="text-center">
-                      <div className="text-4xl font-bold">
+                      <div className="text-3xl sm:text-4xl font-bold">
                         {quizResults.length}
                       </div>
-                      <div className="text-sm text-muted-foreground">Total</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">Total</div>
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <div className="text-lg font-semibold">
+                  <div className="mt-3 sm:mt-4">
+                    <div className="text-base sm:text-lg font-semibold">
                       {Math.round((quizResults.filter(r => r.isCorrect).length / quizResults.length) * 100)}% Score
                     </div>
                   </div>
@@ -415,7 +415,7 @@ export default function LectureDetail() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <Card className="mb-8 border-orange-200 bg-orange-50/50">
+                  <Card className="mb-6 sm:mb-8 border-orange-200 bg-orange-50/50">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-orange-700">
                         <XCircle className="h-5 w-5" />
@@ -436,7 +436,7 @@ export default function LectureDetail() {
               )}
 
               {/* Detailed Results */}
-              <div className="space-y-4 mb-8">
+              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                 {questions.map((q, idx) => {
                   const result = quizResults[idx];
                   return (
@@ -452,8 +452,8 @@ export default function LectureDetail() {
                           ? "border-green-200 bg-green-50/30 hover:border-green-300" 
                           : "border-red-200 bg-red-50/30 hover:border-red-300"
                       }`}>
-                        <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between gap-4">
+                        <CardHeader className="pb-2 sm:pb-3">
+                          <div className="flex items-start justify-between gap-2 sm:gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
                                 <Badge variant="outline" className="text-xs">
@@ -466,7 +466,7 @@ export default function LectureDetail() {
                                   {result?.concept}
                                 </Badge>
                               </div>
-                              <CardTitle className="text-lg">{q.question}</CardTitle>
+                              <CardTitle className="text-sm sm:text-base md:text-lg leading-snug">{q.question}</CardTitle>
                             </div>
                             <motion.div
                               initial={{ scale: 0, rotate: -90 }}
@@ -475,27 +475,27 @@ export default function LectureDetail() {
                               whileHover={{ scale: 1.2, rotate: 360 }}
                             >
                               {result?.isCorrect ? (
-                                <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center transition-colors hover:bg-green-200">
-                                  <CheckCircle className="h-6 w-6 text-green-600" />
+                                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center transition-colors hover:bg-green-200 flex-shrink-0">
+                                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                                 </div>
                               ) : (
-                                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center transition-colors hover:bg-red-200">
-                                  <XCircle className="h-6 w-6 text-red-600" />
+                                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-red-100 flex items-center justify-center transition-colors hover:bg-red-200 flex-shrink-0">
+                                  <XCircle className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
                                 </div>
                               )}
                             </motion.div>
                           </div>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-2 sm:space-y-3">
                           {/* Your Answer */}
-                          <div className={`p-3 rounded-lg border-2 ${
+                          <div className={`p-2 sm:p-3 rounded-lg border-2 ${
                             result?.isCorrect 
                               ? "bg-green-50 border-green-200" 
                               : "bg-red-50 border-red-300"
                           }`}>
-                            <div className="flex items-start gap-2">
-                              <span className="font-semibold text-sm">Your answer:</span>
-                              <span className={`flex-1 font-medium ${
+                            <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                              <span className="font-semibold text-xs sm:text-sm flex-shrink-0">Your answer:</span>
+                              <span className={`flex-1 font-medium text-xs sm:text-sm ${
                                 result?.isCorrect ? "text-green-700" : "text-red-700 line-through"
                               }`}>
                                 {result?.userAnswer || "No answer provided"}
@@ -505,10 +505,10 @@ export default function LectureDetail() {
 
                           {/* Correct Answer (only show if wrong) */}
                           {!result?.isCorrect && (
-                            <div className="p-3 rounded-lg bg-green-50 border-2 border-green-300">
-                              <div className="flex items-start gap-2">
-                                <span className="font-semibold text-sm text-green-800">Correct answer:</span>
-                                <span className="flex-1 text-green-800 font-bold">
+                            <div className="p-2 sm:p-3 rounded-lg bg-green-50 border-2 border-green-300">
+                              <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                                <span className="font-semibold text-xs sm:text-sm text-green-800 flex-shrink-0">Correct answer:</span>
+                                <span className="flex-1 text-green-800 font-bold text-xs sm:text-sm">
                                   {q.correctAnswer}
                                 </span>
                               </div>
@@ -516,12 +516,12 @@ export default function LectureDetail() {
                           )}
 
                           {/* Explanation */}
-                          <div className="pt-3 border-t">
+                          <div className="pt-2 sm:pt-3 border-t">
                             <div className="flex items-start gap-2">
-                              <Sparkles className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                               <div>
-                                <div className="font-semibold text-sm mb-1">Explanation:</div>
-                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                <div className="font-semibold text-xs sm:text-sm mb-1">Explanation:</div>
+                                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                                   {q.explanation}
                                 </p>
                               </div>

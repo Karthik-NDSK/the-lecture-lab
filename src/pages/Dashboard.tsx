@@ -52,23 +52,23 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <Button
             size="lg"
             variant="outline"
-            className="h-12 px-6 text-base font-medium cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="h-11 sm:h-12 px-5 sm:px-6 text-sm sm:text-base font-medium cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
             onClick={() => setShowNewLectureModal(true)}
           >
             <Plus className="mr-2 h-4 w-4" />
             New Lecture
           </Button>
-          <p className="text-muted-foreground mt-4">Paste your lecture notes to get started</p>
+          <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4 px-4">Paste your lecture notes to get started</p>
         </motion.div>
 
         {/* Due for Review Section */}
@@ -79,9 +79,9 @@ export default function Dashboard() {
             transition={{ delay: 0.1 }}
             className="mb-16"
           >
-            <div className="flex items-center gap-2 mb-6">
-              <Calendar className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-bold tracking-tight">Due for Review</h2>
+            <div className="flex items-center gap-2 mb-4 sm:mb-6">
+              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Due for Review</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-4">
               {dueForReview.map((lecture) => {
@@ -139,9 +139,9 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold tracking-tight">Your Lectures</h2>
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Your Lectures</h2>
           </div>
 
           {!lectures ? (
