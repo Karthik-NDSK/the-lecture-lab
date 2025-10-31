@@ -15,6 +15,7 @@ import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as lectures from "../lectures.js";
+import type * as openRouter from "../openRouter.js";
 import type * as quizResults from "../quizResults.js";
 import type * as users from "../users.js";
 
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   lectures: typeof lectures;
+  openRouter: typeof openRouter;
   quizResults: typeof quizResults;
   users: typeof users;
 }>;

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ArrowLeft, BookOpen, Brain, CheckCircle, XCircle, Sparkles, Share2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
@@ -22,12 +22,14 @@ export default function LectureDetail() {
   const lecture = useQuery(api.lectures.get, lectureId ? { lectureId: lectureId as Id<"lectures"> } : "skip");
   const stats = useQuery(api.quizResults.getStats, lectureId ? { lectureId: lectureId as Id<"lectures"> } : "skip");
   const saveResult = useMutation(api.quizResults.saveResult);
+  const gradeShortAnswer = useAction(api.openRouter.gradeShortAnswer);
 
   const [quizMode, setQuizMode] = useState<"overview" | "mcq" | "fill-blank" | "short-answer" | "results">("overview");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
-  const [quizResults, setQuizResults] = useState<Array<{ questionIndex: number; userAnswer: string; isCorrect: boolean; concept: string }>>([]);
+  const [quizResults, setQuizResults] = useState<Array<{ questionIndex: number; userAnswer: string; isCorrect: boolean; concept: string; aiGradingFeedback?: string; aiScore?: number }>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGrading, setIsGrading] = useState(false);
 
   const handleShareResults = () => {
     if (!lecture) return;
@@ -118,23 +120,60 @@ export default function LectureDetail() {
 
   const handleSubmitQuiz = async () => {
     setIsSubmitting(true);
+    setIsGrading(true);
     const questions = getCurrentQuestions();
-    const results = questions.map((q, idx) => {
-      const userAnswer = userAnswers[idx] || "";
-      const isCorrect = userAnswer.toLowerCase().trim() === q.correctAnswer.toLowerCase().trim();
-      return {
-        questionIndex: idx,
-        userAnswer,
-        isCorrect,
-        concept: q.concept,
-      };
-    });
-
-    setQuizResults(results);
-    
-    const score = results.filter(r => r.isCorrect).length;
     
     try {
+      // Grade all questions
+      const results = await Promise.all(
+        questions.map(async (q, idx) => {
+          const userAnswer = userAnswers[idx] || "";
+          
+          // For short answer questions, use AI grading
+          if (quizMode === "short-answer" && userAnswer.trim()) {
+            try {
+              const grading = await gradeShortAnswer({
+                question: q.question,
+                correctAnswer: q.correctAnswer,
+                userAnswer,
+              });
+              
+              return {
+                questionIndex: idx,
+                userAnswer,
+                isCorrect: grading.isCorrect,
+                concept: q.concept,
+                aiGradingFeedback: grading.feedback,
+                aiScore: grading.score,
+              };
+            } catch (error) {
+              console.error("AI grading failed, using fallback:", error);
+              const isCorrect = userAnswer.toLowerCase().trim() === q.correctAnswer.toLowerCase().trim();
+              return {
+                questionIndex: idx,
+                userAnswer,
+                isCorrect,
+                concept: q.concept,
+              };
+            }
+          }
+          
+          // For MCQ and fill-in-blank, use exact matching
+          const isCorrect = userAnswer.toLowerCase().trim() === q.correctAnswer.toLowerCase().trim();
+          return {
+            questionIndex: idx,
+            userAnswer,
+            isCorrect,
+            concept: q.concept,
+          };
+        })
+      );
+
+      setIsGrading(false);
+      setQuizResults(results);
+      
+      const score = results.filter(r => r.isCorrect).length;
+      
       await saveResult({
         lectureId: lectureId as Id<"lectures">,
         quizType: quizMode,
@@ -148,6 +187,7 @@ export default function LectureDetail() {
     } catch (error) {
       toast.error("Failed to save quiz results");
       console.error(error);
+      setIsGrading(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -343,7 +383,7 @@ export default function LectureDetail() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Submitting...
+                          {isGrading ? "AI Grading..." : "Submitting..."}
                         </>
                       ) : (
                         "Submit Quiz"
@@ -515,15 +555,40 @@ export default function LectureDetail() {
                             </div>
                           )}
 
-                          {/* Explanation */}
+                          {/* Explanation / AI Feedback */}
                           <div className="pt-2 sm:pt-3 border-t">
                             <div className="flex items-start gap-2">
                               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
-                              <div>
-                                <div className="font-semibold text-xs sm:text-sm mb-1">Explanation:</div>
-                                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                                  {q.explanation}
-                                </p>
+                              <div className="flex-1">
+                                {result?.aiGradingFeedback ? (
+                                  <>
+                                    <div className="font-semibold text-xs sm:text-sm mb-1 flex items-center gap-2">
+                                      AI Feedback
+                                      {result.aiScore !== undefined && (
+                                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                          result.aiScore >= 90 ? "bg-green-100 text-green-700" :
+                                          result.aiScore >= 70 ? "bg-yellow-100 text-yellow-700" :
+                                          "bg-red-100 text-red-700"
+                                        }`}>
+                                          {result.aiScore}%
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-2">
+                                      {result.aiGradingFeedback}
+                                    </p>
+                                    <div className="text-xs text-muted-foreground italic">
+                                      Expected: {q.correctAnswer}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="font-semibold text-xs sm:text-sm mb-1">Explanation:</div>
+                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                                      {q.explanation}
+                                    </p>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>

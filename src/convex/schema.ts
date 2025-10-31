@@ -76,6 +76,8 @@ const schema = defineSchema(
           userAnswer: v.string(),
           isCorrect: v.boolean(),
           concept: v.string(),
+          aiGradingFeedback: v.optional(v.string()),
+          aiScore: v.optional(v.number()),
         })
       ),
       completedAt: v.number(),
