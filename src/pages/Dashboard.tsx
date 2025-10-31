@@ -61,10 +61,11 @@ export default function Dashboard() {
         >
           <Button
             size="lg"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 text-lg h-auto cursor-pointer"
+            variant="outline"
+            className="h-12 px-6 text-base font-medium cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
             onClick={() => setShowNewLectureModal(true)}
           >
-            <Plus className="mr-2 h-5 w-5" />
+            <Plus className="mr-2 h-4 w-4" />
             New Lecture
           </Button>
           <p className="text-muted-foreground mt-4">Paste your lecture notes to get started</p>
