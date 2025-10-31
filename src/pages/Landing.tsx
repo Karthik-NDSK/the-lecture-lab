@@ -38,7 +38,7 @@ export default function Landing() {
       </header>
 
       {/* Hero Section - Modern Minimal */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-32 lg:py-40">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-28 lg:py-36">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -51,14 +51,14 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.15] px-2">
               Transform Lectures into
               <br />
               <span className="text-muted-foreground">
                 Interactive Learning
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light px-4">
               AI-powered study materials in seconds
             </p>
           </motion.div>
@@ -72,7 +72,7 @@ export default function Landing() {
             <Button
               size="lg"
               onClick={() => navigate("/auth")}
-              className="cursor-pointer h-14 px-12 text-base rounded-full transition-all"
+              className="cursor-pointer h-12 sm:h-14 px-8 sm:px-12 text-sm sm:text-base rounded-full transition-all"
             >
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -83,7 +83,7 @@ export default function Landing() {
 
       {/* Features Section - Minimal Grid */}
       <section className="border-t">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,15 +91,15 @@ export default function Landing() {
             transition={{ duration: 0.6 }}
             className="space-y-12 sm:space-y-16"
           >
-            <div className="text-center space-y-4 mb-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            <div className="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-4 px-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                 Everything You Need
               </h2>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-light">
                 Powerful AI-driven tools
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {[
                 {
                   icon: Brain,
@@ -130,14 +130,14 @@ export default function Landing() {
                   className={idx === 2 ? "sm:col-span-2 lg:col-span-1" : ""}
                 >
                   <Card className="h-full border hover:border-foreground/20 transition-all duration-300">
-                    <CardHeader className="space-y-6">
-                      <div className="h-14 w-14 rounded-2xl bg-foreground/5 flex items-center justify-center">
-                        <feature.icon className="h-7 w-7 text-foreground" />
+                    <CardHeader className="space-y-4 sm:space-y-6 pb-3 sm:pb-6">
+                      <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl sm:rounded-2xl bg-foreground/5 flex items-center justify-center">
+                        <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 text-foreground" />
                       </div>
-                      <h3 className="text-xl font-semibold tracking-tight">{feature.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-semibold tracking-tight">{feature.title}</h3>
                     </CardHeader>
-                    <CardContent>
-                      <p className="text-base text-muted-foreground leading-relaxed">
+                    <CardContent className="pt-0">
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                         {feature.description}
                       </p>
                     </CardContent>
@@ -151,7 +151,7 @@ export default function Landing() {
 
       {/* How It Works - Minimal Steps */}
       <section className="border-t bg-muted/20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -159,15 +159,15 @@ export default function Landing() {
             transition={{ duration: 0.6 }}
             className="space-y-12 sm:space-y-16"
           >
-            <div className="text-center space-y-4 mb-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            <div className="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-4 px-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                 How It Works
               </h2>
-              <p className="text-lg sm:text-xl text-muted-foreground font-light">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-light">
                 Three simple steps
               </p>
             </div>
-            <div className="grid sm:grid-cols-3 gap-8 sm:gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
               {[
                 {
                   step: "1",
@@ -194,17 +194,17 @@ export default function Landing() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: item.delay, duration: 0.5 }}
-                  className="space-y-4 text-center"
+                  className="space-y-3 sm:space-y-4 text-center px-4"
                 >
                   <motion.div 
-                    className="h-16 w-16 rounded-full bg-foreground text-background flex items-center justify-center text-2xl font-bold mx-auto"
+                    className="h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-foreground text-background flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
                     {item.step}
                   </motion.div>
-                  <h3 className="text-xl font-semibold">{item.title}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+                  <h3 className="text-lg sm:text-xl font-semibold">{item.title}</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
                 </motion.div>
@@ -216,19 +216,19 @@ export default function Landing() {
 
       {/* CTA Section - Minimal */}
       <section className="border-t">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center space-y-8"
+            className="text-center space-y-6 sm:space-y-8 px-4"
           >
-            <div className="space-y-6">
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+            <div className="space-y-4 sm:space-y-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15]">
                 Ready to Get Started?
               </h2>
-              <p className="text-xl sm:text-2xl text-muted-foreground font-light">
+              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light">
                 Join students learning smarter
               </p>
             </div>
@@ -239,7 +239,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 onClick={() => navigate("/auth")}
-                className="cursor-pointer h-14 px-12 text-base rounded-full transition-all"
+                className="cursor-pointer h-12 sm:h-14 px-8 sm:px-12 text-sm sm:text-base rounded-full transition-all"
               >
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -251,7 +251,7 @@ export default function Landing() {
 
       {/* Minimal Footer */}
       <footer className="border-t">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-muted-foreground">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 text-center text-xs sm:text-sm text-muted-foreground">
           <p>© 2025 The Lecture Lab. Built with ❤️ for students everywhere.</p>
         </div>
       </footer>
