@@ -46,9 +46,19 @@ export default function Dashboard() {
             <span className="text-2xl">📚</span>
             <h1 className="text-xl font-bold tracking-tight">The Lecture Lab</h1>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Welcome back, <span className="font-semibold text-foreground">{user?.displayName || user?.name}</span>!
-          </p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/progress")}
+              className="cursor-pointer"
+            >
+              📈 Progress
+            </Button>
+            <p className="text-sm text-muted-foreground">
+              Welcome back, <span className="font-semibold text-foreground">{user?.displayName || user?.name}</span>!
+            </p>
+          </div>
         </div>
       </header>
 
