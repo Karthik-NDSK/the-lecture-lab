@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useQuery, useMutation } from "convex/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ArrowLeft, BookOpen, Brain, CheckCircle, XCircle, Sparkles } from "lucide-react";
+import { Loader2, ArrowLeft, BookOpen, Brain, CheckCircle, XCircle, Sparkles, Share2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -28,6 +28,32 @@ export default function LectureDetail() {
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [quizResults, setQuizResults] = useState<Array<{ questionIndex: number; userAnswer: string; isCorrect: boolean; concept: string }>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleShareResults = () => {
+    if (!lecture) return;
+    
+    const score = quizResults.filter(r => r.isCorrect).length;
+    const total = quizResults.length;
+    const percentage = Math.round((score / total) * 100);
+    
+    const shareText = `🎓 I just scored ${percentage}% (${score}/${total}) on "${lecture.title}" in The Lecture Lab! 📚`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'My Quiz Results',
+        text: shareText,
+        url: window.location.href,
+      }).catch(() => {
+        // Fallback to clipboard if share fails
+        navigator.clipboard.writeText(shareText);
+        toast.success("Results copied to clipboard!");
+      });
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(shareText);
+      toast.success("Results copied to clipboard!");
+    }
+  };
 
   if (authLoading) {
     return (
@@ -523,6 +549,16 @@ export default function LectureDetail() {
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Overview
+                  </Button>
+                </motion.div>
+                <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button 
+                    onClick={handleShareResults}
+                    variant="outline"
+                    className="w-full cursor-pointer h-12"
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Share Results
                   </Button>
                 </motion.div>
                 <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
