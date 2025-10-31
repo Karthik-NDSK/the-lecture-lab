@@ -462,12 +462,16 @@ export default function LectureDetail() {
                         </CardHeader>
                         <CardContent className="space-y-3">
                           {/* Your Answer */}
-                          <div className={`p-3 rounded-lg ${
-                            result?.isCorrect ? "bg-green-100/50" : "bg-red-100/50"
+                          <div className={`p-3 rounded-lg border-2 ${
+                            result?.isCorrect 
+                              ? "bg-green-50 border-green-200" 
+                              : "bg-red-50 border-red-300"
                           }`}>
                             <div className="flex items-start gap-2">
                               <span className="font-semibold text-sm">Your answer:</span>
-                              <span className={`flex-1 ${result?.isCorrect ? "text-green-700" : "text-red-700"}`}>
+                              <span className={`flex-1 font-medium ${
+                                result?.isCorrect ? "text-green-700" : "text-red-700 line-through"
+                              }`}>
                                 {result?.userAnswer || "No answer provided"}
                               </span>
                             </div>
@@ -475,10 +479,10 @@ export default function LectureDetail() {
 
                           {/* Correct Answer (only show if wrong) */}
                           {!result?.isCorrect && (
-                            <div className="p-3 rounded-lg bg-green-100/50">
+                            <div className="p-3 rounded-lg bg-green-50 border-2 border-green-300">
                               <div className="flex items-start gap-2">
-                                <span className="font-semibold text-sm">Correct answer:</span>
-                                <span className="flex-1 text-green-700 font-medium">
+                                <span className="font-semibold text-sm text-green-800">Correct answer:</span>
+                                <span className="flex-1 text-green-800 font-bold">
                                   {q.correctAnswer}
                                 </span>
                               </div>
