@@ -158,8 +158,8 @@ export default function LectureDetail() {
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Button variant="ghost" onClick={() => navigate("/dashboard")} className="cursor-pointer">
             <ArrowLeft className="mr-2 h-4 w-4" />

@@ -38,9 +38,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
             <span className="text-2xl">📚</span>
@@ -57,18 +57,17 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-16 sm:mb-20"
         >
           <Button
             size="lg"
-            variant="outline"
-            className="h-11 sm:h-12 px-5 sm:px-6 text-sm sm:text-base font-medium cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="h-14 px-12 text-base rounded-full cursor-pointer transition-all"
             onClick={() => setShowNewLectureModal(true)}
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 h-5 w-5" />
             New Lecture
           </Button>
-          <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4 px-4">Paste your lecture notes to get started</p>
+          <p className="text-base sm:text-lg text-muted-foreground mt-4 sm:mt-6 px-4 font-light">Paste your lecture notes to get started</p>
         </motion.div>
 
         {/* Due for Review Section */}
@@ -79,9 +78,9 @@ export default function Dashboard() {
             transition={{ delay: 0.1 }}
             className="mb-16"
           >
-            <div className="flex items-center gap-2 mb-4 sm:mb-6">
-              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Due for Review</h2>
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+              <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Due for Review</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-4">
               {dueForReview.map((lecture) => {
@@ -139,10 +138,10 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="flex items-center gap-2 mb-4 sm:mb-6">
-            <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Your Lectures</h2>
-          </div>
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+              <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Your Lectures</h2>
+            </div>
 
           {!lectures ? (
             <div className="flex justify-center py-12">
