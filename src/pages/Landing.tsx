@@ -185,7 +185,7 @@ export default function Landing() {
       {/* Minimal Footer */}
       <footer className="border-t">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-muted-foreground">
-          <p>© 2024 The Lecture Lab. Built with ❤️ for students everywhere.</p>
+          <p>© 2025 The Lecture Lab. Built with ❤️ for students everywhere.</p>
         </div>
       </footer>
     </div>
