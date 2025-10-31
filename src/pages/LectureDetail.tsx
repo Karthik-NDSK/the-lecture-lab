@@ -346,9 +346,10 @@ export default function LectureDetail() {
                     : 'bg-gradient-to-br from-red-50 to-rose-50'
                 }`}>
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: "spring" }}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
                     className="text-6xl mb-4"
                   >
                     {(quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 ? '🎉' : 
@@ -418,11 +419,12 @@ export default function LectureDetail() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.4 + idx * 0.05 }}
+                      whileHover={{ scale: 1.01 }}
                     >
-                      <Card className={`overflow-hidden transition-all hover:shadow-md ${
+                      <Card className={`overflow-hidden transition-all hover:shadow-lg cursor-pointer ${
                         result?.isCorrect 
-                          ? "border-green-200 bg-green-50/30" 
-                          : "border-red-200 bg-red-50/30"
+                          ? "border-green-200 bg-green-50/30 hover:border-green-300" 
+                          : "border-red-200 bg-red-50/30 hover:border-red-300"
                       }`}>
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between gap-4">
@@ -441,16 +443,17 @@ export default function LectureDetail() {
                               <CardTitle className="text-lg">{q.question}</CardTitle>
                             </div>
                             <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: 0.5 + idx * 0.05, type: "spring" }}
+                              initial={{ scale: 0, rotate: -90 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              transition={{ delay: 0.5 + idx * 0.05, type: "spring", stiffness: 200 }}
+                              whileHover={{ scale: 1.2, rotate: 360 }}
                             >
                               {result?.isCorrect ? (
-                                <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center transition-colors hover:bg-green-200">
                                   <CheckCircle className="h-6 w-6 text-green-600" />
                                 </div>
                               ) : (
-                                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center transition-colors hover:bg-red-200">
                                   <XCircle className="h-6 w-6 text-red-600" />
                                 </div>
                               )}
@@ -508,21 +511,25 @@ export default function LectureDetail() {
                 transition={{ delay: 0.6 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Button 
-                  onClick={() => setQuizMode("overview")} 
-                  variant="outline" 
-                  className="flex-1 cursor-pointer h-12"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Overview
-                </Button>
-                <Button 
-                  onClick={() => startQuiz(quizMode as any)} 
-                  className="flex-1 cursor-pointer h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                >
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Retake Quiz
-                </Button>
+                <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button 
+                    onClick={() => setQuizMode("overview")} 
+                    variant="outline" 
+                    className="w-full cursor-pointer h-12"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Overview
+                  </Button>
+                </motion.div>
+                <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button 
+                    onClick={() => startQuiz(quizMode as any)} 
+                    className="w-full cursor-pointer h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Retake Quiz
+                  </Button>
+                </motion.div>
               </motion.div>
             </motion.div>
           )}
