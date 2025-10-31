@@ -336,60 +336,194 @@ export default function LectureDetail() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <Card className="mb-8">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-3xl mb-2">Quiz Complete!</CardTitle>
-                  <CardDescription className="text-xl">
-                    Score: {quizResults.filter(r => r.isCorrect).length} / {quizResults.length}
-                  </CardDescription>
-                </CardHeader>
+              {/* Score Summary Card */}
+              <Card className="mb-8 overflow-hidden">
+                <div className={`p-6 text-center ${
+                  (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 
+                    ? 'bg-gradient-to-br from-green-50 to-emerald-50' 
+                    : (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6
+                    ? 'bg-gradient-to-br from-yellow-50 to-amber-50'
+                    : 'bg-gradient-to-br from-red-50 to-rose-50'
+                }`}>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: "spring" }}
+                    className="text-6xl mb-4"
+                  >
+                    {(quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 ? '🎉' : 
+                     (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6 ? '👍' : '📚'}
+                  </motion.div>
+                  <CardTitle className="text-3xl mb-2">
+                    {(quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.8 ? 'Excellent Work!' : 
+                     (quizResults.filter(r => r.isCorrect).length / quizResults.length) >= 0.6 ? 'Good Job!' : 'Keep Practicing!'}
+                  </CardTitle>
+                  <div className="flex items-center justify-center gap-4 mt-4">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-green-600">
+                        {quizResults.filter(r => r.isCorrect).length}
+                      </div>
+                      <div className="text-sm text-muted-foreground">Correct</div>
+                    </div>
+                    <div className="text-2xl text-muted-foreground">/</div>
+                    <div className="text-center">
+                      <div className="text-4xl font-bold">
+                        {quizResults.length}
+                      </div>
+                      <div className="text-sm text-muted-foreground">Total</div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="text-lg font-semibold">
+                      {Math.round((quizResults.filter(r => r.isCorrect).length / quizResults.length) * 100)}% Score
+                    </div>
+                  </div>
+                </div>
               </Card>
 
+              {/* Mistakes Summary */}
+              {quizResults.filter(r => !r.isCorrect).length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Card className="mb-8 border-orange-200 bg-orange-50/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-orange-700">
+                        <XCircle className="h-5 w-5" />
+                        Areas to Review ({quizResults.filter(r => !r.isCorrect).length} mistakes)
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {Array.from(new Set(quizResults.filter(r => !r.isCorrect).map(r => r.concept))).map((concept, idx) => (
+                          <Badge key={idx} variant="secondary" className="bg-orange-100 text-orange-700 border-orange-200">
+                            {concept}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
+              {/* Detailed Results */}
               <div className="space-y-4 mb-8">
                 {questions.map((q, idx) => {
                   const result = quizResults[idx];
                   return (
-                    <Card key={idx} className={result?.isCorrect ? "border-green-200" : "border-red-200"}>
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-lg flex-1">{q.question}</CardTitle>
-                          {result?.isCorrect ? (
-                            <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0" />
-                          ) : (
-                            <XCircle className="h-6 w-6 text-red-600 flex-shrink-0" />
-                          )}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-2">
-                        <div>
-                          <span className="font-medium">Your answer: </span>
-                          <span className={result?.isCorrect ? "text-green-600" : "text-red-600"}>
-                            {result?.userAnswer || "No answer"}
-                          </span>
-                        </div>
-                        {!result?.isCorrect && (
-                          <div>
-                            <span className="font-medium">Correct answer: </span>
-                            <span className="text-green-600">{q.correctAnswer}</span>
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 + idx * 0.05 }}
+                    >
+                      <Card className={`overflow-hidden transition-all hover:shadow-md ${
+                        result?.isCorrect 
+                          ? "border-green-200 bg-green-50/30" 
+                          : "border-red-200 bg-red-50/30"
+                      }`}>
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge variant="outline" className="text-xs">
+                                  Question {idx + 1}
+                                </Badge>
+                                <Badge 
+                                  variant="secondary" 
+                                  className={result?.isCorrect ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
+                                >
+                                  {result?.concept}
+                                </Badge>
+                              </div>
+                              <CardTitle className="text-lg">{q.question}</CardTitle>
+                            </div>
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.5 + idx * 0.05, type: "spring" }}
+                            >
+                              {result?.isCorrect ? (
+                                <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                  <CheckCircle className="h-6 w-6 text-green-600" />
+                                </div>
+                              ) : (
+                                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                                  <XCircle className="h-6 w-6 text-red-600" />
+                                </div>
+                              )}
+                            </motion.div>
                           </div>
-                        )}
-                        <div className="text-sm text-muted-foreground pt-2 border-t">
-                          {q.explanation}
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          {/* Your Answer */}
+                          <div className={`p-3 rounded-lg ${
+                            result?.isCorrect ? "bg-green-100/50" : "bg-red-100/50"
+                          }`}>
+                            <div className="flex items-start gap-2">
+                              <span className="font-semibold text-sm">Your answer:</span>
+                              <span className={`flex-1 ${result?.isCorrect ? "text-green-700" : "text-red-700"}`}>
+                                {result?.userAnswer || "No answer provided"}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Correct Answer (only show if wrong) */}
+                          {!result?.isCorrect && (
+                            <div className="p-3 rounded-lg bg-green-100/50">
+                              <div className="flex items-start gap-2">
+                                <span className="font-semibold text-sm">Correct answer:</span>
+                                <span className="flex-1 text-green-700 font-medium">
+                                  {q.correctAnswer}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Explanation */}
+                          <div className="pt-3 border-t">
+                            <div className="flex items-start gap-2">
+                              <Sparkles className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <div>
+                                <div className="font-semibold text-sm mb-1">Explanation:</div>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {q.explanation}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
                   );
                 })}
               </div>
 
-              <div className="flex gap-4">
-                <Button onClick={() => setQuizMode("overview")} variant="outline" className="flex-1 cursor-pointer">
+              {/* Action Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <Button 
+                  onClick={() => setQuizMode("overview")} 
+                  variant="outline" 
+                  className="flex-1 cursor-pointer h-12"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
                   Back to Overview
                 </Button>
-                <Button onClick={() => startQuiz(quizMode as any)} className="flex-1 cursor-pointer">
+                <Button 
+                  onClick={() => startQuiz(quizMode as any)} 
+                  className="flex-1 cursor-pointer h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
                   Retake Quiz
                 </Button>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
