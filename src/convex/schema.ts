@@ -30,18 +30,62 @@ const schema = defineSchema(
       isAnonymous: v.optional(v.boolean()), // is the user anonymous. do not remove
 
       role: v.optional(roleValidator), // role of the user. do not remove
+      displayName: v.optional(v.string()), // user's preferred display name
+      hasCompletedOnboarding: v.optional(v.boolean()),
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    lectures: defineTable({
+      userId: v.id("users"),
+      title: v.string(),
+      content: v.string(),
+      status: v.union(
+        v.literal("processing"),
+        v.literal("ready"),
+        v.literal("error")
+      ),
+      summary: v.optional(v.string()),
+      keyConcepts: v.optional(v.array(v.string())),
+      questions: v.optional(
+        v.array(
+          v.object({
+            type: v.string(),
+            question: v.string(),
+            options: v.optional(v.array(v.string())),
+            correctAnswer: v.string(),
+            explanation: v.string(),
+            concept: v.string(),
+          })
+        )
+      ),
+      createdAt: v.number(),
+      nextReviewDate: v.optional(v.number()),
+      lastStudied: v.optional(v.number()),
+    })
+      .index("by_user", ["userId"])
+      .index("by_user_and_status", ["userId", "status"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    quizResults: defineTable({
+      userId: v.id("users"),
+      lectureId: v.id("lectures"),
+      quizType: v.string(),
+      score: v.number(),
+      totalQuestions: v.number(),
+      answers: v.array(
+        v.object({
+          questionIndex: v.number(),
+          userAnswer: v.string(),
+          isCorrect: v.boolean(),
+          concept: v.string(),
+        })
+      ),
+      completedAt: v.number(),
+    })
+      .index("by_lecture", ["lectureId"])
+      .index("by_user", ["userId"]),
   },
   {
     schemaValidation: false,
-  },
+  }
 );
 
 export default schema;
